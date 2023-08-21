@@ -36,7 +36,8 @@ searcher = Searcher(MDX_PATH)
 ```python
 searcher.search(示例)
 ```
-如果搜索不到，将在屏幕提示“No such key”
+- 如果搜索不到，将在屏幕提示“No such key”
+- 如果搜索到的词条为“A同B”，将继续展示B词条示意
 
 若想将搜索结果以字符串形式得到，使用`get()`方法：
 ```pythoon
