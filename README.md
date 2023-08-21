@@ -1,6 +1,8 @@
 # 现某汉语词典Searcher
 
-词典是网上找的（https://github.com/bamboo512/ModernChineseDict），mdx分析库来自https://bitbucket.org/xwang/mdict-analysis/src/master/（pureSalsa20.py和readmdict.py和ripemd128.py）
+词典是网上找的（https://github.com/bamboo512/ModernChineseDict）
+
+mdx分析库（pureSalsa20.py和readmdict.py和ripemd128.py）来自https://bitbucket.org/xwang/mdict-analysis/src/master/
 
 ## 安装
 
@@ -58,8 +60,10 @@ searcher.lucky(6)
 ```
 
 ## 已知bug
-- “同”、“见”同时出现时，只能正常显示第一个![](image.png)
-- 部分“见下”词条不能正常显示![Alt text](image-1.png)
+- “同”、“见”同时出现时，只能正常显示第一个
+    ![](image.png)
+- 部分“见下”词条不能正常显示
+    ![](image-1.png)
 
 以上bug均可通过修改源代码，改变词条内容处理方式解决
 
