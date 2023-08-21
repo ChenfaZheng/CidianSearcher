@@ -34,20 +34,20 @@ searcher = Searcher(MDX_PATH)
 
 将搜索结果打印到屏幕：
 ```python
-searcher.search(示例)
+searcher.search('示例')
 ```
 - 如果搜索不到，将在屏幕提示“No such key”
 - 如果搜索到的词条为“A同B”，将继续展示B词条示意
 
 若想将搜索结果以字符串形式得到，使用`get()`方法：
 ```pythoon
-result_string = searcher.get(示例)
+result_string = searcher.get('示例')
 ```
 如果搜索不到，将返回字符串`No such key`。`search()`方法是对`get()`方法的封装。
 
 ### 遍历模式
 
-使用`search_all()`方法，将字典中所有可用词条展示在屏幕上（很耗时！）
+使用`search_all()`方法，将词典中所有可用词条展示在屏幕上（很耗时！）
 ```python
 searcher.search_all()
 ```
