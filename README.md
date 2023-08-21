@@ -1,8 +1,6 @@
 # 现某汉语词典Searcher
 
-词典是网上找的（https://github.com/bamboo512/ModernChineseDict）
-
-mdx分析库（pureSalsa20.py和readmdict.py和ripemd128.py）来自https://bitbucket.org/xwang/mdict-analysis/src/master/
+[词典](https://github.com/bamboo512/ModernChineseDict)是网上找的；mdx分析库（pureSalsa20.py和readmdict.py和ripemd128.py）来自[Xiaoqiang Wang](https://bitbucket.org/xwang/mdict-analysis/src/master/)
 
 ## 安装
 
