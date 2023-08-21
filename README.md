@@ -2,6 +2,8 @@
 
 [词典](https://github.com/bamboo512/ModernChineseDict)是网上找的；mdx分析库（pureSalsa20.py和readmdict.py和ripemd128.py）来自[Xiaoqiang Wang](https://bitbucket.org/xwang/mdict-analysis/src/master/)
 
+仅供个人学习使用
+
 ## 安装
 
 基于Python3，依赖于python-lzo与xmltodict
