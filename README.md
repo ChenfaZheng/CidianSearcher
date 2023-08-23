@@ -43,7 +43,7 @@ searcher.search(示例)
 ```pythoon
 result_string = searcher.get(示例)
 ```
-如果搜索不到，将返回字符串`No such key`。`search()`方法是对`get()`方法的封装。
+如果搜索不到，将返回字符串`No such key`。`search()`方法是对`get()`方法的封装。亦可以用`gen_tab()`方法得到`list`类型的搜索结果，见[例子：生成兼类词表](ex_gen_concurrent.py)。
 
 ### 遍历模式
 
@@ -65,6 +65,7 @@ searcher.lucky(6)
     ![](image.png)
 - 部分“见下”词条不能正常显示
     ![](image-1.png)
+- 尚未处理`gen_tab()`方法得到的词条解释中的无效符号
 
 以上bug均可通过修改源代码，改变词条内容处理方式解决
 

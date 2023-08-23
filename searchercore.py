@@ -14,7 +14,10 @@ class Searcher():
         print(f'{mdx_path} loaded')
         print(f'Number of items: {self.len_items}')
         print('-------------------\n')
-    
+      
+    def get_items(self):
+        return self.items
+
     def get(self, mykey, last_key=None) -> str:
         if last_key == mykey:
             return
@@ -210,6 +213,126 @@ class Searcher():
             key = k.decode()
             print(f'Key: {key}')
             self.search(key)
+    
+    def gen_tab(self, mykey) -> list:
+        
+        have_key = False
+        for k, v in self.items:
+            key = k.decode()
+            if key == mykey:
+                have_key = True
+                break
+        if not have_key:
+            return []
+        
+        output_page = '====================\n'
+        val = v.decode()
+        if val.startswith('@@@LINK='):
+            # real_key = val[8:].strip()
+            # output_page += f'{key} SAME AS {real_key}\n'
+            # print(output_page)
+            # return self.gen_tab(real_key, last_key=mykey)
+            return []
+
+        context_lst = []
+        idx0 = -1
+        for idx in range(len(val)):
+            if val[idx:idx+6] == '<entry':
+                idx0 = idx
+            elif val[idx:idx+8] == '</entry>':
+                context_lst.append(val[idx0:idx+8])
+                idx0 = -1
+        
+        # remove image tag
+        for idx, context in enumerate(context_lst):
+            cidx = 0
+            while cidx < len(context):
+                if context[cidx:cidx+4] == '<img':
+                    for cidx1 in range(cidx, len(context)):
+                        if context[cidx1] == '>':
+                            break
+                    context = context[:cidx] + context[cidx1+1:]
+                else:
+                    cidx += 1
+            context_lst[idx] = context
+
+        # remove table tag
+        for idx, context in enumerate(context_lst):
+            cidx = 0
+            while cidx < len(context):
+                if context[cidx:cidx+6] == '<table':
+                    for cidx1 in range(cidx, len(context)):
+                        if context[cidx1-7:cidx1+1] == '</table>':
+                            break
+                    context = context[:cidx] + context[cidx1+1:]
+                else:
+                    cidx += 1
+            context_lst[idx] = context
+        
+        res_lst_all = [key, ]
+        
+        for context in context_lst:
+            context_dict = xmltodict.parse(context)
+
+            res_lst = [None, ]
+
+            # deal with title
+            title_str = ''
+            if 'hw' in context_dict['entry']:
+                if not type(context_dict['entry']['hw']) is str:
+                    if 'pinyin' in context_dict['entry']['hw']:
+                        res_lst[0] = f'{context_dict["entry"]["hw"]["pinyin"]}'
+
+            output_page += f'{title_str}\n'
+
+            # deal with defination
+            def_lst = context_dict['entry']['def']
+            # output_page += f'{def_lst}\n'
+            if type(def_lst) is str:
+                res_lst_all.append(res_lst)
+                continue
+            elif type(def_lst) is dict:
+                def_lst = [def_lst]
+            assert type(def_lst) is list
+            
+
+            for def_ in def_lst:
+                this_res_lst = [
+                    None, # cixing
+                    None, # pinyin
+                    None, # shiyi
+                    None, # liju
+                ]
+                if type(def_) is str:
+                    this_res_lst[2] = def_
+                    res_lst.append(this_res_lst)
+                    continue
+                # if 'num' in def_:
+                #     output_str += f'{def_["num"]} '
+                if 'pinyin' in def_:
+                    this_res_lst[1] = f'{def_["pinyin"]}'
+                if 'ps' in def_:
+                    this_res_lst[0] = f'{def_["ps"]}'
+                if '#text' in def_:
+                    this_res_lst[2] = f'{def_["#text"]}'
+                if 'ex' in def_:
+                    if type(def_['ex']) is list:
+                        tmp_str = ''
+                        for ex in def_['ex']:
+                            if type(ex) is str:
+                                tmp_str += f'{ex}'
+                            elif type(ex) is dict:
+                                tmp_str += f'{ex["#text"]} '
+                        this_res_lst[3] = tmp_str
+                    elif type(def_['ex']) is dict:
+                        this_res_lst[3] = f'{def_["ex"]["#text"]} '
+                    else:
+                        this_res_lst[3] = f'{def_["ex"]} '
+                
+                res_lst.append(this_res_lst)
+            res_lst_all.append(res_lst)
+
+        return res_lst_all
 
     def lucky(self, num=1) -> None:
         assert num <= self.len_items, f'Number of items is {self.len_items}, but you want {num}'
